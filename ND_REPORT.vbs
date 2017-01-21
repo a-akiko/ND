@@ -1,4 +1,5 @@
 ' 各種設定
+const RESULT_DIR = "C:\github\ND_trial\result\"
 const DB_FILE_PATH = "C:\github\ND_trial\data\DB.xlsx"
 const DB_SHEET_NAME = "CRF回収"
 const FACILITY_COL = 5
@@ -24,7 +25,19 @@ next
 
 '施設リストから施設を順番に読み取る
 for each facility in facilities
-	msgbox facility
+
+	'ブックを作成
+	set NEWBOOK	= XLS.Workbooks.Add
+	NEWBOOK.Application.DisplayAlerts = False
+
+	'不要なシートを削除
+	orgSheetCnt = NEWBOOK.Sheets.count
+	For i = 1 to orgSheetCnt-1
+		NEWBOOK.Sheets(1).delete
+	Next
+
+	'施設名で保存する
+	NEWBOOK.saveAs(RESULT_DIR & facility & ".xlsx")
 next
 
 dbBook.close
